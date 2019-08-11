@@ -1,26 +1,27 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react"
+import Context from "./use-reducer/context"
+import reducer from "./use-reducer/reducer"
+import Form from "./use-reducer/Form"
+import useForm from "react-hook-form"
 
-const App: React.FC = () => {
+interface Props {}
+const UseReducerApp: React.FC<Props> = props => {
+  const { errors, register, handleSubmit } = useForm()
+
+  const [state, dispatch] = React.useReducer(reducer, {
+    errors,
+    register,
+    handleSubmit,
+    count: 0,
+  })
+  console.log("coming directly from useForm - errors:", errors)
+  console.log("coming from state - errors:", state.errors)
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <>
+      <Context.Provider value={{ state, dispatch }}>
+        <Form />
+      </Context.Provider>
+    </>
+  )
 }
-
-export default App;
+export default UseReducerApp
